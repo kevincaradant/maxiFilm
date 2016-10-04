@@ -13,6 +13,8 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import models.RenameFiles;
 
 @FXMLController(value = "/resources/fxml/PopupOthrt.fxml" , title = "Material Design Example")
@@ -58,14 +60,16 @@ public class PopupOthrt{
     void onNoAllButton(ActionEvent event) {
 
     }
+    Stage stage;
     Boolean yesAll;
     Boolean noAll;
+    RenameFiles film;
     
     @PostConstruct
     public void init(){
-    	RenameFiles film = (RenameFiles) context.getRegisteredObject("Film");
+    	film = (RenameFiles) context.getRegisteredObject("Film");
+    	stage = (Stage) context.getRegisteredObject("Stage");
     	yesAll = (Boolean) context.getRegisteredObject("YesAllButtonState");
-    	System.out.println("1: "+yesAll);
     	noAll = (Boolean) context.getRegisteredObject("NoAllButtonState");
     	detailsBeforeLabelPopupRename.setText("Before: "+film.getNameWithoutExt());
     	detailsAfterLabelPopupRename.setText("After: "+film.getCleanName());
@@ -79,10 +83,9 @@ public class PopupOthrt{
     @FXML
     void onYesAllButton(ActionEvent event) {
     	//How to access at yesAll in init
-    	System.out.println("2: "+yesAll);
     	yesAll = true;
-    	System.out.println("3: "+yesAll);
     	context.register("YesAllButtonState", yesAll);
+    	stage.close();
     }
 
     @FXML

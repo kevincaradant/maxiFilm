@@ -53,6 +53,7 @@ public class HomeController {
   @PostConstruct
   public void init() throws FlowException, VetoException {
     Settings settings = (Settings) context.getRegisteredObject("Settings");
+    
     home.setOnDragOver(new EventHandler<DragEvent>() {
       @Override
       public void handle(DragEvent event) {
@@ -227,16 +228,14 @@ public class HomeController {
       ViewFlowContext flowContext1 = new ViewFlowContext();
       DefaultFlowContainer container1 = new DefaultFlowContainer();
       Flow flow2 = new Flow(PopupOthrt.class);
-      System.out.println(film);
       flowContext1.register("YesAllButtonState", yesAll);
       flowContext1.register("noAllButtonState", noAll);
-      flowContext1.register("Film", film);
       flowContext1.register("Film", film);
       flowContext1.register("Stage", stage1);
       flow2.createHandler(flowContext1).start(container1);
       Scene scene1 = new Scene(container1.getView(), 400, 230);
       scene1.getStylesheets().add(MaxiFilm.class.getResource("/resources/css/jfoenix-main-demo.css").toExternalForm());
       stage1.setScene(scene1);
-      stage1.show();
+      stage1.showAndWait();
   }
 }
