@@ -17,18 +17,8 @@
       </dependency>
       <dependency>
          <groupId>de.jensd</groupId>
-         <artifactId>fontawesomefx-commons</artifactId>
-         <version>8.12</version>
-      </dependency>
-      <dependency>
-         <groupId>de.jensd</groupId>
          <artifactId>fontawesomefx</artifactId>
          <version>8.0.10</version>
-      </dependency>
-      <dependency>
-         <groupId>de.jensd</groupId>
-         <artifactId>fontawesomefx-materialdesignfont</artifactId>
-         <version>1.6.50</version>
       </dependency>
       <dependency>
          <groupId>io.datafx</groupId>
