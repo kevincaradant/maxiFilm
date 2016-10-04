@@ -90,12 +90,12 @@ public class MainController{
       
       //Open the Drawer when you start the app
       mainDrawer.open();
-      
       Stage stage = (Stage) context.getRegisteredObject("Stage");
       
       // Set the default controller
       Flow innerFlow = new Flow(HomeController.class);
       flowHandler = innerFlow.createHandler(context);
+      context.register("MainDrawer", mainDrawer);
       context.register("ContentFlowHandler", flowHandler);
       context.register("Settings", settings);
       context.register("Stage", stage);//?
