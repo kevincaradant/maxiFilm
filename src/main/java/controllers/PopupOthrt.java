@@ -55,11 +55,7 @@ public class PopupOthrt{
 
     @FXMLViewFlowContext
     private ViewFlowContext context;
-    
-    @FXML
-    void onNoAllButton(ActionEvent event) {
 
-    }
     Stage stage;
     Boolean yesAll;
     Boolean noAll;
@@ -68,28 +64,37 @@ public class PopupOthrt{
     @PostConstruct
     public void init(){
     	film = (RenameFiles) context.getRegisteredObject("Film");
-    	stage = (Stage) context.getRegisteredObject("Stage");
+    	stage = (Stage) context.getRegisteredObject("Stage1");
     	yesAll = (Boolean) context.getRegisteredObject("YesAllButtonState");
     	noAll = (Boolean) context.getRegisteredObject("NoAllButtonState");
     	detailsBeforeLabelPopupRename.setText("Before: "+film.getNameWithoutExt());
     	detailsAfterLabelPopupRename.setText("After: "+film.getCleanName());
     }
     
+    
+    @FXML
+    void onNoAllButton(ActionEvent event) {
+    	noAll = true;
+    	context.register("NoAllButtonState", noAll);
+    	stage.close();
+    }
+    
     @FXML
     void onNoButton(ActionEvent event) {
-
+    	stage.close();
     }
 
     @FXML
     void onYesAllButton(ActionEvent event) {
-    	//How to access at yesAll in init
     	yesAll = true;
+    	film.applyRename(film.getCleanName());
     	context.register("YesAllButtonState", yesAll);
     	stage.close();
     }
 
     @FXML
     void onYesButton(ActionEvent event) {
-
+    	film.applyRename(film.getCleanName());
+    	stage.close();
     }
 }

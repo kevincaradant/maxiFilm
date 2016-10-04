@@ -26,6 +26,7 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import main.MaxiFilm;
 import models.RenameFiles;
@@ -73,7 +74,6 @@ public class HomeController {
         Dragboard dragboard = event.getDragboard();
         boolean success = false;
         if (dragboard.hasFiles()) {
-          Integer cptPopup = 0;
           noAll = false;
           success = true;
           yesAll = false;
@@ -103,11 +103,12 @@ public class HomeController {
                 } catch (IOException e) {
                   e.printStackTrace();
                 } 
-              }else if (Files.isRegularFile(dragboard.getFiles().get(cptPopup).toPath())){
-                film = new RenameFiles(new File(dragboard.getFiles().get(cptPopup).toString()), settings);
+              }else if (Files.isRegularFile(file.toPath())){
+                film = new RenameFiles(new File(file.toString()), settings);
                 if(!yesAll){
                   if(film.getNameWithoutExt().length() > 0)
 					try {
+						System.out.println(film.getNameWithoutExt());
 						createPopup();
 					} catch (FlowException e) {
 						e.printStackTrace();
@@ -229,9 +230,9 @@ public class HomeController {
       DefaultFlowContainer container1 = new DefaultFlowContainer();
       Flow flow2 = new Flow(PopupOthrt.class);
       flowContext1.register("YesAllButtonState", yesAll);
-      flowContext1.register("noAllButtonState", noAll);
+      flowContext1.register("NoAllButtonState", noAll);
       flowContext1.register("Film", film);
-      flowContext1.register("Stage", stage1);
+      flowContext1.register("Stage1", stage1);
       flow2.createHandler(flowContext1).start(container1);
       Scene scene1 = new Scene(container1.getView(), 400, 230);
       scene1.getStylesheets().add(MaxiFilm.class.getResource("/resources/css/jfoenix-main-demo.css").toExternalForm());
