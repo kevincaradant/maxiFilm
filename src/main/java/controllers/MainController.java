@@ -98,6 +98,7 @@ public class MainController{
       context.register("MainDrawer", mainDrawer);
       context.register("ContentFlowHandler", flowHandler);
       context.register("Settings", settings);
+      context.register("ROOT", root);
       context.register("Stage", stage);//?
       context.register("ContentFlow", innerFlow);
       mainDrawer.setContent(flowHandler.start(new AnimatedFlowContainer(Duration.millis(300), ContainerAnimations.SWIPE_RIGHT)));
