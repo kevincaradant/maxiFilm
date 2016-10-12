@@ -6,30 +6,41 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 
-import com.jfoenix.controls.JFXDecorator;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXButton.ButtonType;
+import com.jfoenix.controls.JFXDialog;
+import com.jfoenix.controls.JFXDialogLayout;
 
 import io.datafx.controller.FXMLController;
-import io.datafx.controller.flow.Flow;
 import io.datafx.controller.flow.FlowException;
-import io.datafx.controller.flow.container.DefaultFlowContainer;
 import io.datafx.controller.flow.context.FXMLViewFlowContext;
 import io.datafx.controller.flow.context.ViewFlowContext;
 import io.datafx.controller.util.VetoException;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Labeled;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
-import javafx.stage.Modality;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import main.MaxiFilm;
 import models.RenameFiles;
 import models.Settings;
 
@@ -47,12 +58,10 @@ public class HomeController {
   SimpleBooleanProperty  noAllProperty = new SimpleBooleanProperty(false);
   SimpleBooleanProperty  yesAllProperty = new SimpleBooleanProperty(false);
   ArrayList<Path> arrayFile = new ArrayList<Path>();
-  Stage stage;
 
   @PostConstruct
   public void init() throws FlowException, VetoException {
     Settings settings = (Settings) context.getRegisteredObject("Settings");
-    Stage stage = (Stage) context.getRegisteredObject("Stage");
 
     home.setOnDragOver(new EventHandler<DragEvent>() {
       @Override
@@ -94,51 +103,142 @@ public class HomeController {
         }
         event.setDropCompleted(success);
         event.consume();
-        
-        arrayFile.forEach(file -> {
-          film = new RenameFiles(new File(file.toString()), settings);
-          if(!noAllProperty.getValue()){
-            if(film.getNameWithoutExt().length() > 0){
-              if(!yesAllProperty.getValue()){
-            		try {
-        				createPopup();
-
-					} catch (FlowException | InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}		    
-              }else{
-                film.applyRename(film.getCleanName());
-              }
-            }
-          }
-        });
+        try {
+			createPopup(arrayFile.iterator(), settings);
+		} catch (FlowException | InterruptedException e) {
+			e.printStackTrace();
+		}
       }
     });
   }
   
-  private void createPopup() throws FlowException, InterruptedException{
-    	  Stage stage1 = new Stage();
-    	  stage1.setResizable(false);
-    	  Runnable closeJFXDecorator = new Runnable(){
-    		  public void run(){
-    			  stage1.close();
-    		  }
-    	  };
-          ViewFlowContext flowContext1 = new ViewFlowContext();
-          DefaultFlowContainer container1 = new DefaultFlowContainer();
-          Flow flow2 = new Flow(Popup.class);
-          flowContext1.register("YesAllButtonState", yesAllProperty);
-          flowContext1.register("NoAllButtonState", noAllProperty);
-          flowContext1.register("Film", film);
-          flowContext1.register("Stage1", stage1);
-          flow2.createHandler(flowContext1).start(container1);
-          JFXDecorator decorator = new JFXDecorator(stage1, container1.getView(),false, false, false);
-    		decorator.setOnCloseButtonAction(closeJFXDecorator);
-    		Scene scene1 = new Scene(decorator, 400, 230);
-          scene1.getStylesheets().add(MaxiFilm.class.getResource("/resources/css/jfoenix-main-demo.css").toExternalForm());
-          stage1.setScene(scene1);
-          stage1.initModality(Modality.APPLICATION_MODAL);
-          stage1.showAndWait();	
+  private void createPopup(Iterator<Path> iterator, Settings settings) throws FlowException, InterruptedException{
+	  if (iterator.hasNext()) {
+		film = new RenameFiles(new File(iterator.next().toString()), settings);
+		JFXDialogLayout content = new JFXDialogLayout();
+	  	JFXDialog dialog = new JFXDialog((StackPane) context.getRegisteredObject("ROOT"), content, JFXDialog.DialogTransition.CENTER);
+	  	dialog.setOverlayClose(false);
+	  	Text detailsHeaderLabelPopupRename = new Text("Do you want to rename ?\n");
+ 		content.setHeading(detailsHeaderLabelPopupRename);
+ 		content.setAlignment(Pos.CENTER);
+ 		GridPane  root = new GridPane ();
+ 		root.setId("gridPopup");
+ 		root.setPrefHeight(110);
+ 		root.setPrefWidth(500);
+ 		root.setVgap(20);
+ 		root.setHgap(14);
+ 		
+ 		VBox vbox = new VBox();
+ 		vbox.setPrefWidth(500);
+ 		vbox.setSpacing(1);
+
+ 		Label detailsBeforeLabelPopupRename = new Label("Before: "+film.getNameWithoutExt());
+ 		detailsBeforeLabelPopupRename.setId("detailsBeforeLabelPopupRename");
+ 		detailsBeforeLabelPopupRename.setAlignment(Pos.CENTER);
+ 		detailsBeforeLabelPopupRename.setFont(new Font("System Bold", 12));
+ 		
+ 		Label detailsAfterLabelPopupRename = new Label("After: "+film.getCleanName());
+ 		detailsAfterLabelPopupRename.setId("messageLabelRenamePopup");
+ 		detailsAfterLabelPopupRename.setAlignment(Pos.CENTER);
+ 		detailsAfterLabelPopupRename.setFont(new Font("System Bold", 12));
+ 		
+ 		vbox.getChildren().addAll(detailsBeforeLabelPopupRename, detailsAfterLabelPopupRename);
+ 		
+ 		HBox actionParent = new HBox();
+ 		actionParent.setId("actionParent");
+ 		actionParent.setAlignment(Pos.CENTER);
+ 		
+ 		HBox okParent = new HBox();
+ 		okParent.setId("okParent");
+ 		okParent.setSpacing(10);
+ 		okParent.setAlignment(Pos.CENTER);
+ 		
+ 		EventHandler<ActionEvent> handler = evt -> {
+            Labeled source = (Labeled) evt.getSource();
+            
+            switch (source.getId()) {
+			case "buttonYesPopupRename":
+				film.applyRename(film.getCleanName());
+				if (iterator.hasNext()) {
+					film = new RenameFiles(new File(iterator.next().toString()), settings);
+					detailsAfterLabelPopupRename.setText("Before: "+film.getNameWithoutExt());
+					detailsBeforeLabelPopupRename.setText("After: "+film.getCleanName());
+	            } else {
+	            	dialog.close();
+	            }
+				
+				break;
+			case "buttonNoPopupRename":
+				if (iterator.hasNext()) {
+					film = new RenameFiles(new File(iterator.next().toString()), settings);
+					detailsAfterLabelPopupRename.setText("Before: "+film.getNameWithoutExt());
+					detailsBeforeLabelPopupRename.setText("After: "+film.getCleanName());
+	            } else {
+	            	dialog.close();
+	            }		
+				break;
+			case "buttonYesAllPopupRename":
+				film.applyRename(film.getCleanName());
+				while (iterator.hasNext()) {
+					film = new RenameFiles(new File(iterator.next().toString()), settings);
+					film.applyRename(film.getCleanName());
+	            } 
+            	dialog.close();
+	            	
+				
+				break;
+			case "buttonNoAllPopupRename":
+	            dialog.close();  
+				break;
+			default:
+				break;
+			}
+        };
+        
+ 		JFXButton buttonYesPopupRename = new JFXButton("Yes");
+ 		buttonYesPopupRename.setPrefHeight(30);
+ 		buttonYesPopupRename.setPrefWidth(70);
+ 		buttonYesPopupRename.setId("buttonYesPopupRename");
+ 		buttonYesPopupRename.setButtonType(ButtonType.RAISED);
+ 		buttonYesPopupRename.setOnAction(handler);
+ 		buttonYesPopupRename.setStyle("-fx-text-fill:WHITE;-fx-background-color:#5264AE;-fx-font-size:14px;");
+ 		
+ 		JFXButton buttonNoPopupRename = new JFXButton("No");
+ 		buttonNoPopupRename.setPrefHeight(30);
+ 		buttonNoPopupRename.setPrefWidth(70);
+ 		buttonNoPopupRename.setId("buttonNoPopupRename");
+ 		buttonNoPopupRename.setButtonType(ButtonType.RAISED);
+ 		buttonNoPopupRename.setOnAction(handler);
+ 		buttonNoPopupRename.setStyle("-fx-text-fill:WHITE;-fx-background-color:#5264AE;-fx-font-size:14px;");
+ 		
+ 		
+ 		JFXButton buttonYesAllPopupRename = new JFXButton("Yes All");
+ 		buttonYesAllPopupRename.setPrefHeight(30);
+ 		buttonYesAllPopupRename.setPrefWidth(70);
+ 		buttonYesAllPopupRename.setId("buttonYesAllPopupRename");
+ 		buttonYesAllPopupRename.setButtonType(ButtonType.RAISED);
+ 		buttonYesAllPopupRename.setOnAction(handler);
+ 		buttonYesAllPopupRename.setStyle("-fx-text-fill:WHITE;-fx-background-color:#5264AE;-fx-font-size:14px;");
+ 		
+ 		
+ 		JFXButton buttonNoAllPopupRename = new JFXButton("No All");
+ 		buttonNoAllPopupRename.setPrefHeight(30);
+ 		buttonNoAllPopupRename.setPrefWidth(70);
+ 		buttonNoAllPopupRename.setId("buttonNoAllPopupRename");
+ 		buttonNoAllPopupRename.setOnAction(handler);
+ 		buttonNoAllPopupRename.setButtonType(ButtonType.RAISED);
+ 		buttonNoAllPopupRename.setStyle("-fx-text-fill:WHITE;-fx-background-color:#5264AE;-fx-font-size:14px;");
+ 		
+ 		okParent.getChildren().addAll(buttonNoAllPopupRename, buttonYesAllPopupRename, buttonNoPopupRename, buttonYesPopupRename);
+ 		
+ 		GridPane.setColumnIndex(okParent, 1);
+ 		GridPane.setRowIndex(okParent, 1);
+ 		GridPane.setColumnIndex(vbox, 1);
+ 		GridPane.setRowIndex(vbox, 0);
+ 		GridPane.setMargin(vbox, new Insets(0,0,0,50));
+ 		root.getChildren().addAll(vbox, okParent);
+ 		content.setBody(root);
+ 		dialog.show(); 
+	  }
   }
 }
