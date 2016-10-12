@@ -249,7 +249,7 @@ public class RenameFiles {
 			nameTemp = (m.group(1)+m.group(3));
 			
 			// cleaning date if position is more than 8 characters
-			p = Pattern .compile("(.*)([0-9]{4})(.*)");
+			p = Pattern .compile("(.*)([0-9]{8})(.*)");
 			
 			m = p.matcher(nameTemp);
 			if (m.find())
