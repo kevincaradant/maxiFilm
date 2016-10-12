@@ -18,8 +18,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import models.RenameFiles;
 
-@FXMLController(value = "/resources/fxml/PopupOthrt.fxml" , title = "Material Design Example")
-public class PopupOthrt{
+@FXMLController(value = "/resources/fxml/Popup.fxml" , title = "Material Design Example")
+public class Popup{
 
     @FXML
     private GridPane gridPopup;
