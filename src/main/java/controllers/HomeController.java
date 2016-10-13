@@ -1,5 +1,6 @@
 package controllers;
 
+import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -29,6 +30,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.Labeled;
+import javafx.scene.control.Separator;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
@@ -36,6 +38,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import models.RenameFiles;
@@ -115,31 +118,32 @@ public class HomeController {
 		JFXDialogLayout content = new JFXDialogLayout();
 	  	JFXDialog dialog = new JFXDialog((StackPane) context.getRegisteredObject("ROOT"), content, JFXDialog.DialogTransition.CENTER);
 	  	dialog.setOverlayClose(false);
+
 	  	Text detailsHeaderLabelPopupRename = new Text("Do you want to rename ?\n");
  		content.setHeading(detailsHeaderLabelPopupRename);
  		content.setAlignment(Pos.CENTER);
  		GridPane  root = new GridPane ();
  		root.setId("gridPopup");
- 		root.setPrefHeight(110);
- 		root.setPrefWidth(500);
  		root.setVgap(20);
  		root.setHgap(14);
- 		
  		VBox vbox = new VBox();
- 		vbox.setPrefWidth(500);
  		vbox.setSpacing(1);
-
  		Label detailsBeforeLabelPopupRename = new Label("Before: "+film.getNameWithoutExt());
  		detailsBeforeLabelPopupRename.setId("detailsBeforeLabelPopupRename");
- 		detailsBeforeLabelPopupRename.setAlignment(Pos.CENTER);
+ 		detailsBeforeLabelPopupRename.setAlignment(Pos.BASELINE_LEFT);
  		detailsBeforeLabelPopupRename.setFont(new Font("System Bold", 12));
- 		
+ 		detailsBeforeLabelPopupRename.setMinWidth(600);
+ 		detailsBeforeLabelPopupRename.setTextFill(Color.RED);
+ 		detailsBeforeLabelPopupRename.setPadding(new Insets(0,0,7,0));
+ 		Separator separator = new Separator();
  		Label detailsAfterLabelPopupRename = new Label("After: "+film.getCleanName());
  		detailsAfterLabelPopupRename.setId("messageLabelRenamePopup");
- 		detailsAfterLabelPopupRename.setAlignment(Pos.CENTER);
+ 		detailsAfterLabelPopupRename.setAlignment(Pos.BASELINE_LEFT);
  		detailsAfterLabelPopupRename.setFont(new Font("System Bold", 12));
- 		
- 		vbox.getChildren().addAll(detailsBeforeLabelPopupRename, detailsAfterLabelPopupRename);
+ 		detailsAfterLabelPopupRename.setPadding(new Insets(7,0,0,0));
+ 		detailsAfterLabelPopupRename.setMinWidth(600);
+ 		detailsAfterLabelPopupRename.setTextFill(Color.GREEN);
+ 		vbox.getChildren().addAll(detailsBeforeLabelPopupRename, separator, detailsAfterLabelPopupRename);
  		
  		HBox actionParent = new HBox();
  		actionParent.setId("actionParent");
@@ -158,8 +162,8 @@ public class HomeController {
 				film.applyRename(film.getCleanName());
 				if (iterator.hasNext()) {
 					film = new RenameFiles(new File(iterator.next().toString()), settings);
-					detailsAfterLabelPopupRename.setText("Before: "+film.getNameWithoutExt());
-					detailsBeforeLabelPopupRename.setText("After: "+film.getCleanName());
+					detailsBeforeLabelPopupRename.setText("Before: "+film.getNameWithoutExt());
+					detailsAfterLabelPopupRename.setText("After: "+film.getCleanName());
 	            } else {
 	            	dialog.close();
 	            }
@@ -168,8 +172,8 @@ public class HomeController {
 			case "buttonNoPopupRename":
 				if (iterator.hasNext()) {
 					film = new RenameFiles(new File(iterator.next().toString()), settings);
-					detailsAfterLabelPopupRename.setText("Before: "+film.getNameWithoutExt());
-					detailsBeforeLabelPopupRename.setText("After: "+film.getCleanName());
+					detailsBeforeLabelPopupRename.setText("Before: "+film.getNameWithoutExt());
+					detailsAfterLabelPopupRename.setText("After: "+film.getCleanName());
 	            } else {
 	            	dialog.close();
 	            }		
