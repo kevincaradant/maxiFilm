@@ -15,7 +15,18 @@ public class RenameFiles {
 	private String serialPattern;
 	private String spaceChar;
 	private Settings settings;
-	
+	private final String REG_GET_EXTENSION = ".*(\\..*)$";
+	private final String REG_GET_EXTENSION_WITHOUT_NAME = "(.*)(\\..*)$";
+	private final String REG_FORMAT_SERIAL_S00E00 = ".*((s|S)([0-9]{1,2}).{0,1}(e|E)([0-9]{1,2})).*";
+	private final String REG_FORMAT_SERIAL_00x00 = ".*(([0-9]{1,2})(x|X)([0-9]{1,2})).*";
+	private final String REG_FORMAT_MUSIC = "([0-9]{3})(.*)";
+	private final String REG_CLEANING_NUMBER = "(.*)(\\(.*\\))(.*)";
+	private final String REG_CLEANING_BRACKET = "(.*)(\\[.*\\])(.*)";
+	private final String REG_CLEANING_ACCOLADE = "(.*)(\\{.*\\})(.*)";
+	private final String REG_CLEANING_DATE = "(.*)([0-9]{4})(.*)";
+	private final String REG_CLEANING_ACCENT = 	"[^\\p{ASCII}]";
+	private final String REG_1_CLEANING_ZONE_TELECHARGEMENT = "(.*)(www.*zone.*telechargement.*com)(.*)";
+
 	public RenameFiles (File pFileFilm, Settings pSettings)
 	{
 		renameFile = pFileFilm;
@@ -97,7 +108,7 @@ public class RenameFiles {
 	public String getExtension()
 	{
 		try{
-			Pattern p = Pattern .compile(".*(\\..*)$");
+			Pattern p = Pattern .compile(REG_GET_EXTENSION);
 			Matcher m = p.matcher(renameFile.getName());
 			if (m.find())
 			return m.group(1);
@@ -109,7 +120,7 @@ public class RenameFiles {
 	public String getNameWithoutExt()
 	{
 		try{
-			Pattern p = Pattern .compile("(.*)(\\..*)$");
+			Pattern p = Pattern .compile(REG_GET_EXTENSION_WITHOUT_NAME);
 			Matcher m = p.matcher(renameFile.getName());
 			if (m.find()){
 				return m.group(1);
@@ -131,7 +142,7 @@ public class RenameFiles {
 		
 		try{
 			// S02E10
-			Pattern p = Pattern .compile(".*((s|S)([0-9]{1,2}).{0,1}(e|E)([0-9]{1,2})).*");
+			Pattern p = Pattern .compile(REG_FORMAT_SERIAL_S00E00);
 			
 			Matcher m = p.matcher(renameFile.getName());
 			
@@ -148,7 +159,7 @@ public class RenameFiles {
 			else
 			{
 				// 02x10
-				p = Pattern .compile(".*(([0-9]{1,2})(x|X)([0-9]{1,2})).*");
+				p = Pattern .compile(REG_FORMAT_SERIAL_00x00);
 				
 				m = p.matcher(renameFile.getName());
 				
@@ -223,33 +234,33 @@ public class RenameFiles {
 		try{
 			// If it's a music
 			if(extensionIsMusic() && settings.getRemoveTrack()){
-				p = Pattern .compile("([0-9]{3})(.*)");
+				p = Pattern .compile(REG_FORMAT_MUSIC);
 				m = p.matcher(nameTemp);
 				if (m.find())
 				nameTemp = (m.group(2));
 			}
 			// CLEANING
 			// 0-9
-			p = Pattern .compile("(.*)(\\(.*\\))(.*)");
+			p = Pattern .compile(REG_CLEANING_NUMBER);
 			
 			m = p.matcher(nameTemp);
 			if (m.find())
 			nameTemp = (m.group(1)+m.group(3));
 			// []
-			p = Pattern .compile("(.*)(\\[.*\\])(.*)");
+			p = Pattern .compile(REG_CLEANING_BRACKET);
 			
 			m = p.matcher(nameTemp);
 			if (m.find())
 			nameTemp = (m.group(1)+m.group(3));
 			// {}
-			p = Pattern .compile("(.*)(\\{.*\\})(.*)");
+			p = Pattern .compile(REG_CLEANING_ACCOLADE);
 			
 			m = p.matcher(nameTemp);
 			if (m.find())
 			nameTemp = (m.group(1)+m.group(3));
 			
 			// cleaning date if position is more than 8 characters
-			p = Pattern .compile("(.*)([0-9]{4})(.*)");
+			p = Pattern .compile(REG_CLEANING_DATE);
 			
 			m = p.matcher(nameTemp);
 			if (m.find())
@@ -259,10 +270,10 @@ public class RenameFiles {
 			}
 			
 			// cleaning accents
-			nameTemp = Normalizer.normalize(nameTemp, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
+			nameTemp = Normalizer.normalize(nameTemp, Normalizer.Form.NFD).replaceAll(REG_CLEANING_ACCENT, "");
 			
 			// cleaning "www_zone_telechargement_com"
-			p = Pattern .compile("(.*)(www.*zone.*telechargement.*com)(.*)");
+			p = Pattern .compile(REG_1_CLEANING_ZONE_TELECHARGEMENT);
 			
 			m = p.matcher(nameTemp);
 			if (m.find())
@@ -273,7 +284,6 @@ public class RenameFiles {
 			// cleaning of the spaces
 			nameTemp = replaceWeirdChar(nameTemp, " ");
 			// trim
-			nameTemp = nameTemp.trim();
 			// cleaning of the spaces
 			nameTemp = replaceWeirdChar(nameTemp, spaceChar);
 			nameTemp = cleanDoubleSpace(nameTemp); // after deleted the useless words, sometimes you can have two spaces
@@ -287,7 +297,6 @@ public class RenameFiles {
 				if (m.find())
 				nameTemp = (m.group(1));
 			}
-			
 			// all the first letter in capital
 			if (this.settings.areAllFirstLetterCapital()){
 				nameTemp = allFirstLetterInCapital(nameTemp);
@@ -297,12 +306,13 @@ public class RenameFiles {
 			// first letter in capital
 			else if (this.settings.isFirstLetterCapital()){
 				nameTemp = firstLetterInCapital(nameTemp);
+				replaceWeirdChar(nameTemp, " ");
+				nameTemp = nameTemp.trim();
 			}
 			// set separator and clean
 			setSpaceChar(settings.getSeparatorMovieName());
 			// cleaning of the spaces
 			nameTemp = replaceWeirdChar(nameTemp, spaceChar);
-			
 			// trim
 			nameTemp = nameTemp.trim();
 			
@@ -368,20 +378,20 @@ public class RenameFiles {
 			pString = pString.replaceAll("  ", " ");
 			strLenNew = pString.length();
 		}
-		
 		return pString;
 	}
 	
 	private String firstLetterInCapital (String pString)
 	{
 		// my sentence --> My sentence
-		
 		char[] charTable = pString.toCharArray();
 		if(charTable.length >0){
 			charTable[0]=Character.toUpperCase(charTable[0]);
 			return new String(charTable);
+			
 		}else{
 			return new String("");
+			
 		}
 	}
 	
@@ -396,10 +406,12 @@ public class RenameFiles {
 		// for all words --> 1) put the first letter in capital, 2) add this word at the new string to rebuild the full string
 		for (int i=0 ; i<=str.length-1 ; i++)
 		{
-			if(i != str.length-1)
-			newString += firstLetterInCapital(str[i]) + settings.getSeparatorMovieName();
-			else
-			newString += firstLetterInCapital(str[i]);
+			if(i != str.length-1){
+				newString += firstLetterInCapital(str[i]) + settings.getSeparatorMovieName();
+			}
+			else{
+				newString += firstLetterInCapital(str[i]);
+			}
 		}
 		return newString;
 	}
@@ -415,14 +427,18 @@ public class RenameFiles {
 			Pattern p = Pattern.compile("[\\p{Alpha}\\p{Digit}]");
 			
 			Matcher m = p.matcher(String.valueOf(pBase.charAt(i)));
+			if (m.find()){
+				newBase += pBase.substring(i,i+1);
+			}
 			
-			if (m.find())
-			newBase += pBase.substring(i,i+1);
 			
-			else
-			newBase += pCarSpace;
+			else{
+				newBase += spaceChar;
+			}
+			
+			
+			
 		}
-		
 		return newBase;
 	}
 	

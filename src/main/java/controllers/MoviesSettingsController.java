@@ -71,12 +71,6 @@ public class MoviesSettingsController {
       toggle.setSelected(true);
     }
   }
-
-
-  @FXML
-  void returnToHome(ActionEvent event) {
-	  
-  }
   
   @FXML
   void saveSettingsMovies(ActionEvent event) {
