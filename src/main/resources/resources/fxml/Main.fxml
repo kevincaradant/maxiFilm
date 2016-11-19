@@ -18,7 +18,7 @@
               <JFXHamburger fx:id="mainHamburgerTop" BorderPane.alignment="CENTER">
                 <HamburgerBackArrowBasicTransition />
               </JFXHamburger>
-              <Label>Maxi Rename</Label>
+              <Label>Maxi Film</Label>
             </leftItems>
             <padding>
               <Insets left="10.0" />
