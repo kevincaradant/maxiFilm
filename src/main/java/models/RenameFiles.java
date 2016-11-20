@@ -229,7 +229,6 @@ public class RenameFiles {
 	{	
 		Pattern p;
 		Matcher m;
-		
 		String nameTemp = getNameWithoutExt().toLowerCase();
 		try{
 			// If it's a music
@@ -258,7 +257,6 @@ public class RenameFiles {
 			m = p.matcher(nameTemp);
 			if (m.find())
 			nameTemp = (m.group(1)+m.group(3));
-			
 			// cleaning date if position is more than 8 characters
 			p = Pattern .compile(REG_CLEANING_DATE);
 			
@@ -268,7 +266,6 @@ public class RenameFiles {
 				if (m.start(2)>=8)
 				nameTemp = (m.group(1));
 			}
-			
 			// cleaning accents
 			nameTemp = Normalizer.normalize(nameTemp, Normalizer.Form.NFD).replaceAll(REG_CLEANING_ACCENT, "");
 			
@@ -283,10 +280,8 @@ public class RenameFiles {
 			}
 			// cleaning of the spaces
 			nameTemp = replaceWeirdChar(nameTemp, " ");
-			// trim
-			// cleaning of the spaces
-			nameTemp = replaceWeirdChar(nameTemp, spaceChar);
-			nameTemp = cleanDoubleSpace(nameTemp); // after deleted the useless words, sometimes you can have two spaces
+			nameTemp.trim();
+			//nameTemp = cleanDoubleSpace(nameTemp); // after deleted the useless words, sometimes you can have two spaces
 			// SETTINGS
 			// if it's a serial --> erase all after SxEx
 			if (isSerial())
@@ -297,22 +292,27 @@ public class RenameFiles {
 				if (m.find())
 				nameTemp = (m.group(1));
 			}
+			
 			// all the first letter in capital
 			if (this.settings.areAllFirstLetterCapital()){
 				nameTemp = allFirstLetterInCapital(nameTemp);
 			}
 			
-			
 			// first letter in capital
 			else if (this.settings.isFirstLetterCapital()){
 				nameTemp = firstLetterInCapital(nameTemp);
-				replaceWeirdChar(nameTemp, " ");
-				nameTemp = nameTemp.trim();
 			}
+			
+			// remove all weird character and trim to remove spaces
+			replaceWeirdChar(nameTemp, " ");
+			nameTemp = nameTemp.trim();
+			
 			// set separator and clean
 			setSpaceChar(settings.getSeparatorMovieName());
+			
 			// cleaning of the spaces
 			nameTemp = replaceWeirdChar(nameTemp, spaceChar);
+			
 			// trim
 			nameTemp = nameTemp.trim();
 			
@@ -328,7 +328,6 @@ public class RenameFiles {
 			
 			// trim
 			nameTemp = nameTemp.trim();
-			
 		}catch(PatternSyntaxException pse){
 		}
 		
@@ -433,7 +432,7 @@ public class RenameFiles {
 			
 			
 			else{
-				newBase += spaceChar;
+				newBase += pCarSpace;
 			}
 			
 			

@@ -159,6 +159,7 @@ public class HomeController {
             
             switch (source.getId()) {
 			case "buttonYesPopupRename":
+				
 				film.applyRename(film.getCleanName());
 				if (iterator.hasNext()) {
 					film = new RenameFiles(new File(iterator.next().toString()), settings);
