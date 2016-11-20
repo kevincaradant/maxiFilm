@@ -99,18 +99,18 @@
               <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-              <JFXRadioButton fx:id="radioButtonSerial5" selected="true" styleClass="custom-jfx-radio-button" text="Serial_Season/Episode" userData="5" GridPane.rowIndex="2">
+              <JFXRadioButton fx:id="radioButtonSerial5" onAction="#saveSettingsSeries" selected="true" styleClass="custom-jfx-radio-button" text="Serial_Season/Episode" userData="5" GridPane.rowIndex="2">
                 <toggleGroup>
                   <ToggleGroup fx:id="groupSeparatorName" />
                 </toggleGroup></JFXRadioButton>
-                <JFXRadioButton fx:id="radioButtonSerial4" styleClass="custom-jfx-radio-button" text="Serial _ Season/Episode" toggleGroup="$groupSeparatorName" userData="4" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <JFXRadioButton fx:id="radioButtonSerial3" styleClass="custom-jfx-radio-button" text="Serial-Season/Episode" toggleGroup="$groupSeparatorName" userData="3" GridPane.rowIndex="1">
+                <JFXRadioButton fx:id="radioButtonSerial4" onAction="#saveSettingsSeries" styleClass="custom-jfx-radio-button" text="Serial _ Season/Episode" toggleGroup="$groupSeparatorName" userData="4" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <JFXRadioButton fx:id="radioButtonSerial3" onAction="#saveSettingsSeries" styleClass="custom-jfx-radio-button" text="Serial-Season/Episode" toggleGroup="$groupSeparatorName" userData="3" GridPane.rowIndex="1">
                   <GridPane.margin>
                     <Insets />
                   </GridPane.margin>
                 </JFXRadioButton>
-                <JFXRadioButton fx:id="radioButtonSerial2" styleClass="custom-jfx-radio-button" text="Serial - Season/Episode" toggleGroup="$groupSeparatorName" userData="2" GridPane.columnIndex="1" />
-                <JFXRadioButton fx:id="radioButtonSerial1" styleClass="custom-jfx-radio-button" text="Serial Season/Episode" toggleGroup="$groupSeparatorName" userData="1" />
+                <JFXRadioButton fx:id="radioButtonSerial2" onAction="#saveSettingsSeries" styleClass="custom-jfx-radio-button" text="Serial - Season/Episode" toggleGroup="$groupSeparatorName" userData="2" GridPane.columnIndex="1" />
+                <JFXRadioButton fx:id="radioButtonSerial1" onAction="#saveSettingsSeries" styleClass="custom-jfx-radio-button" text="Serial Season/Episode" toggleGroup="$groupSeparatorName" userData="1" />
               </children>
               <GridPane.margin>
                 <Insets left="90.0" />

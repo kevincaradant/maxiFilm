@@ -19,7 +19,7 @@ public class RenameFiles {
 	private final String REG_GET_EXTENSION_WITHOUT_NAME = "(.*)(\\..*)$";
 	private final String REG_FORMAT_SERIAL_S00E00 = ".*((s|S)([0-9]{1,2}).{0,1}(e|E)([0-9]{1,2})).*";
 	private final String REG_FORMAT_SERIAL_00x00 = ".*(([0-9]{1,2})(x|X)([0-9]{1,2})).*";
-	private final String REG_FORMAT_MUSIC = "([0-9]{3})(.*)";
+	private final String REG_FORMAT_MUSIC = "([0-9]{2,3})(.*)";
 	private final String REG_CLEANING_NUMBER = "(.*)(\\(.*\\))(.*)";
 	private final String REG_CLEANING_BRACKET = "(.*)(\\[.*\\])(.*)";
 	private final String REG_CLEANING_ACCOLADE = "(.*)(\\{.*\\})(.*)";
@@ -235,9 +235,12 @@ public class RenameFiles {
 			if(extensionIsMusic() && settings.getRemoveTrack()){
 				p = Pattern .compile(REG_FORMAT_MUSIC);
 				m = p.matcher(nameTemp);
-				if (m.find())
-				nameTemp = (m.group(2));
+				if (m.find()){
+					nameTemp = (m.group(2));
+					nameTemp = nameTemp.trim();
+				}
 			}
+			
 			// CLEANING
 			// 0-9
 			p = Pattern .compile(REG_CLEANING_NUMBER);
@@ -280,8 +283,7 @@ public class RenameFiles {
 			}
 			// cleaning of the spaces
 			nameTemp = replaceWeirdChar(nameTemp, " ");
-			nameTemp.trim();
-			//nameTemp = cleanDoubleSpace(nameTemp); // after deleted the useless words, sometimes you can have two spaces
+			nameTemp = nameTemp.trim();
 			// SETTINGS
 			// if it's a serial --> erase all after SxEx
 			if (isSerial())
@@ -312,8 +314,6 @@ public class RenameFiles {
 			
 			// cleaning of the spaces
 			nameTemp = replaceWeirdChar(nameTemp, spaceChar);
-			
-			// trim
 			nameTemp = nameTemp.trim();
 			
 			// if it's a serial :
@@ -351,34 +351,34 @@ public class RenameFiles {
 		list_ext_music.add(".riff");
 		
 		if(list_ext_music.contains(getExtension()))
-		return true;
+			return true;
 		return false;
 	}
 	
-	private String cleanDoubleSpace (String pString)
-	{
-		int strLenOld = pString.length(), strLenNew = -1;
-		
-		// double "__"
-		while (strLenOld!=strLenNew)
-		{
-			strLenOld = pString.length();
-			pString = pString.replaceAll("__", "_");
-			strLenNew = pString.length();
-		}
-		
-		// double "  "
-		strLenOld = pString.length();
-		strLenNew = -1;
-		
-		while (strLenOld!=strLenNew)
-		{
-			strLenOld = pString.length();
-			pString = pString.replaceAll("  ", " ");
-			strLenNew = pString.length();
-		}
-		return pString;
-	}
+//	private String cleanDoubleSpace (String pString)
+//	{
+//		int strLenOld = pString.length(), strLenNew = -1;
+//		
+//		// double "__"
+//		while (strLenOld!=strLenNew)
+//		{
+//			strLenOld = pString.length();
+//			pString = pString.replaceAll("__", "_");
+//			strLenNew = pString.length();
+//		}
+//		
+//		// double "  "
+//		strLenOld = pString.length();
+//		strLenNew = -1;
+//		
+//		while (strLenOld!=strLenNew)
+//		{
+//			strLenOld = pString.length();
+//			pString = pString.replaceAll("  ", " ");
+//			strLenNew = pString.length();
+//		}
+//		return pString;
+//	}
 	
 	private String firstLetterInCapital (String pString)
 	{

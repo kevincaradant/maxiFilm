@@ -1,7 +1,6 @@
 package main;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 import java.io.File;
 
@@ -288,5 +287,176 @@ public class RegexRenameFile {
 		settings.setSeasonEpisode(12);
 		RenameFiles film = new RenameFiles(new File(movieDropped), settings);
 		assertEquals(movieCleaned, film.getCleanName());
+	}
+	
+	// TEST MUSIC TRACK NUMBER
+	@Test
+	public void removeMusicTrackNumber() {
+		String fileDropped = "01.Basquiat.mp3";
+		String fileCleaned = "Basquiat";
+		Settings settings = new Settings();
+		settings.setMovieName(6);
+		settings.setRemoveTrack(true);
+		RenameFiles film = new RenameFiles(new File(fileDropped), settings);
+		assertEquals(fileCleaned, film.getCleanName());
+	}
+	
+	// TEST MUSIC EXTENSIONS
+	@Test
+	public void extensionMp3Music() {
+		String fileDropped = "01.Basquiat.mp3";
+		String fileCleaned = "Basquiat";
+		Settings settings = new Settings();
+		settings.setRemoveTrack(true);
+		RenameFiles film = new RenameFiles(new File(fileDropped), settings);
+		assertEquals(fileCleaned, film.getCleanName());
+	}
+	@Test
+	public void extensionFlacMusic() {
+		String fileDropped = "01.Basquiat.flac";
+		String fileCleaned = "Basquiat";
+		Settings settings = new Settings();
+		settings.setRemoveTrack(true);
+		RenameFiles film = new RenameFiles(new File(fileDropped), settings);
+		assertEquals(fileCleaned, film.getCleanName());
+	}
+	@Test
+	public void extensionWavMusic() {
+		String fileDropped = "01.Basquiat.wav";
+		String fileCleaned = "Basquiat";
+		Settings settings = new Settings();
+		settings.setRemoveTrack(true);
+		RenameFiles film = new RenameFiles(new File(fileDropped), settings);
+		assertEquals(fileCleaned, film.getCleanName());
+	}
+	@Test
+	public void extensionOggMusic() {
+		String fileDropped = "01.Basquiat.ogg";
+		String fileCleaned = "Basquiat";
+		Settings settings = new Settings();
+		settings.setRemoveTrack(true);
+		RenameFiles film = new RenameFiles(new File(fileDropped), settings);
+		assertEquals(fileCleaned, film.getCleanName());
+	}
+	@Test
+	public void extensionOgaMusic() {
+		String fileDropped = "01.Basquiat.oga";
+		String fileCleaned = "Basquiat";
+		Settings settings = new Settings();
+		settings.setRemoveTrack(true);
+		RenameFiles film = new RenameFiles(new File(fileDropped), settings);
+		assertEquals(fileCleaned, film.getCleanName());
+	}
+	@Test
+	public void extensionRawMusic() {
+		String fileDropped = "01.Basquiat.raw";
+		String fileCleaned = "Basquiat";
+		Settings settings = new Settings();
+		settings.setRemoveTrack(true);
+		RenameFiles film = new RenameFiles(new File(fileDropped), settings);
+		assertEquals(fileCleaned, film.getCleanName());
+	}
+	@Test
+	public void extensionAlacMusic() {
+		String fileDropped = "01.Basquiat.alac";
+		String fileCleaned = "Basquiat";
+		Settings settings = new Settings();
+		settings.setRemoveTrack(true);
+		RenameFiles film = new RenameFiles(new File(fileDropped), settings);
+		assertEquals(fileCleaned, film.getCleanName());
+	}
+	@Test
+	public void extensionWmaMusic() {
+		String fileDropped = "01.Basquiat.wma";
+		String fileCleaned = "Basquiat";
+		Settings settings = new Settings();
+		settings.setRemoveTrack(true);
+		RenameFiles film = new RenameFiles(new File(fileDropped), settings);
+		assertEquals(fileCleaned, film.getCleanName());
+	}
+	@Test
+	public void extensionAuMusic() {
+		String fileDropped = "01.Basquiat.au";
+		String fileCleaned = "Basquiat";
+		Settings settings = new Settings();
+		settings.setRemoveTrack(true);
+		RenameFiles film = new RenameFiles(new File(fileDropped), settings);
+		assertEquals(fileCleaned, film.getCleanName());
+	}
+	@Test
+	public void extensionAsfMusic() {
+		String fileDropped = "01.Basquiat.asf";
+		String fileCleaned = "Basquiat";
+		Settings settings = new Settings();
+		settings.setRemoveTrack(true);
+		RenameFiles film = new RenameFiles(new File(fileDropped), settings);
+		assertEquals(fileCleaned, film.getCleanName());
+	}
+	@Test
+	public void extensionAacMusic() {
+		String fileDropped = "01.Basquiat.aac";
+		String fileCleaned = "Basquiat";
+		Settings settings = new Settings();
+		settings.setRemoveTrack(true);
+		RenameFiles film = new RenameFiles(new File(fileDropped), settings);
+		assertEquals(fileCleaned, film.getCleanName());
+	}
+	@Test
+	public void extensionAtracMusic() {
+		String fileDropped = "01.Basquiat.atrac";
+		String fileCleaned = "Basquiat";
+		Settings settings = new Settings();
+		settings.setRemoveTrack(true);
+		RenameFiles film = new RenameFiles(new File(fileDropped), settings);
+		assertEquals(fileCleaned, film.getCleanName());
+	}
+	@Test
+	public void extensionRiffMusic() {
+		String fileDropped = "01.Basquiat.riff";
+		String fileCleaned = "Basquiat";
+		Settings settings = new Settings();
+		settings.setRemoveTrack(true);
+		RenameFiles film = new RenameFiles(new File(fileDropped), settings);
+		assertEquals(fileCleaned, film.getCleanName());
+	}
+	@Test
+	public void extensionUselessMusic() {
+		String fileDropped = "01.Basquiat.avi";
+		String fileCleaned = "01_Basquiat";
+		Settings settings = new Settings();
+		settings.setMovieName(6);
+		settings.setRemoveTrack(true);
+		RenameFiles film = new RenameFiles(new File(fileDropped), settings);
+		assertEquals(fileCleaned, film.getCleanName());
+	}
+	@Test
+	public void extensionRegex1Music() {
+		String fileDropped = "010.Basquiat.mp3";
+		String fileCleaned = "Basquiat";
+		Settings settings = new Settings();
+		settings.setMovieName(6);
+		settings.setRemoveTrack(true);
+		RenameFiles film = new RenameFiles(new File(fileDropped), settings);
+		assertEquals(fileCleaned, film.getCleanName());
+	}
+	@Test
+	public void extensionRegex2Music() {
+		String fileDropped = "10.Basquiat.mp3";
+		String fileCleaned = "Basquiat";
+		Settings settings = new Settings();
+		settings.setMovieName(6);
+		settings.setRemoveTrack(true);
+		RenameFiles film = new RenameFiles(new File(fileDropped), settings);
+		assertEquals(fileCleaned, film.getCleanName());
+	}
+	@Test
+	public void extensionRegex3Music() {
+		String fileDropped = "10 Basquiat.mp3";
+		String fileCleaned = "Basquiat";
+		Settings settings = new Settings();
+		settings.setMovieName(6);
+		settings.setRemoveTrack(true);
+		RenameFiles film = new RenameFiles(new File(fileDropped), settings);
+		assertEquals(fileCleaned, film.getCleanName());
 	}
 }
