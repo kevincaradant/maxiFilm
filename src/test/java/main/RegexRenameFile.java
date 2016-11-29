@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import models.RenameFiles;
@@ -307,6 +308,7 @@ public class RegexRenameFile {
 		String fileDropped = "01.Basquiat.mp3";
 		String fileCleaned = "Basquiat";
 		Settings settings = new Settings();
+		settings.setMovieName(6);
 		settings.setRemoveTrack(true);
 		RenameFiles film = new RenameFiles(new File(fileDropped), settings);
 		assertEquals(fileCleaned, film.getCleanName());
@@ -316,6 +318,7 @@ public class RegexRenameFile {
 		String fileDropped = "01.Basquiat.flac";
 		String fileCleaned = "Basquiat";
 		Settings settings = new Settings();
+		settings.setMovieName(6);
 		settings.setRemoveTrack(true);
 		RenameFiles film = new RenameFiles(new File(fileDropped), settings);
 		assertEquals(fileCleaned, film.getCleanName());
@@ -325,6 +328,7 @@ public class RegexRenameFile {
 		String fileDropped = "01.Basquiat.wav";
 		String fileCleaned = "Basquiat";
 		Settings settings = new Settings();
+		settings.setMovieName(6);
 		settings.setRemoveTrack(true);
 		RenameFiles film = new RenameFiles(new File(fileDropped), settings);
 		assertEquals(fileCleaned, film.getCleanName());
@@ -334,6 +338,7 @@ public class RegexRenameFile {
 		String fileDropped = "01.Basquiat.ogg";
 		String fileCleaned = "Basquiat";
 		Settings settings = new Settings();
+		settings.setMovieName(6);
 		settings.setRemoveTrack(true);
 		RenameFiles film = new RenameFiles(new File(fileDropped), settings);
 		assertEquals(fileCleaned, film.getCleanName());
@@ -343,6 +348,7 @@ public class RegexRenameFile {
 		String fileDropped = "01.Basquiat.oga";
 		String fileCleaned = "Basquiat";
 		Settings settings = new Settings();
+		settings.setMovieName(6);
 		settings.setRemoveTrack(true);
 		RenameFiles film = new RenameFiles(new File(fileDropped), settings);
 		assertEquals(fileCleaned, film.getCleanName());
@@ -352,6 +358,7 @@ public class RegexRenameFile {
 		String fileDropped = "01.Basquiat.raw";
 		String fileCleaned = "Basquiat";
 		Settings settings = new Settings();
+		settings.setMovieName(6);
 		settings.setRemoveTrack(true);
 		RenameFiles film = new RenameFiles(new File(fileDropped), settings);
 		assertEquals(fileCleaned, film.getCleanName());
@@ -361,6 +368,7 @@ public class RegexRenameFile {
 		String fileDropped = "01.Basquiat.alac";
 		String fileCleaned = "Basquiat";
 		Settings settings = new Settings();
+		settings.setMovieName(6);
 		settings.setRemoveTrack(true);
 		RenameFiles film = new RenameFiles(new File(fileDropped), settings);
 		assertEquals(fileCleaned, film.getCleanName());
@@ -370,6 +378,7 @@ public class RegexRenameFile {
 		String fileDropped = "01.Basquiat.wma";
 		String fileCleaned = "Basquiat";
 		Settings settings = new Settings();
+		settings.setMovieName(6);
 		settings.setRemoveTrack(true);
 		RenameFiles film = new RenameFiles(new File(fileDropped), settings);
 		assertEquals(fileCleaned, film.getCleanName());
@@ -379,6 +388,7 @@ public class RegexRenameFile {
 		String fileDropped = "01.Basquiat.au";
 		String fileCleaned = "Basquiat";
 		Settings settings = new Settings();
+		settings.setMovieName(6);
 		settings.setRemoveTrack(true);
 		RenameFiles film = new RenameFiles(new File(fileDropped), settings);
 		assertEquals(fileCleaned, film.getCleanName());
@@ -388,6 +398,7 @@ public class RegexRenameFile {
 		String fileDropped = "01.Basquiat.asf";
 		String fileCleaned = "Basquiat";
 		Settings settings = new Settings();
+		settings.setMovieName(6);
 		settings.setRemoveTrack(true);
 		RenameFiles film = new RenameFiles(new File(fileDropped), settings);
 		assertEquals(fileCleaned, film.getCleanName());
@@ -397,6 +408,7 @@ public class RegexRenameFile {
 		String fileDropped = "01.Basquiat.aac";
 		String fileCleaned = "Basquiat";
 		Settings settings = new Settings();
+		settings.setMovieName(6);
 		settings.setRemoveTrack(true);
 		RenameFiles film = new RenameFiles(new File(fileDropped), settings);
 		assertEquals(fileCleaned, film.getCleanName());
@@ -406,6 +418,7 @@ public class RegexRenameFile {
 		String fileDropped = "01.Basquiat.atrac";
 		String fileCleaned = "Basquiat";
 		Settings settings = new Settings();
+		settings.setMovieName(6);
 		settings.setRemoveTrack(true);
 		RenameFiles film = new RenameFiles(new File(fileDropped), settings);
 		assertEquals(fileCleaned, film.getCleanName());
@@ -415,6 +428,7 @@ public class RegexRenameFile {
 		String fileDropped = "01.Basquiat.riff";
 		String fileCleaned = "Basquiat";
 		Settings settings = new Settings();
+		settings.setMovieName(6);
 		settings.setRemoveTrack(true);
 		RenameFiles film = new RenameFiles(new File(fileDropped), settings);
 		assertEquals(fileCleaned, film.getCleanName());
@@ -458,5 +472,48 @@ public class RegexRenameFile {
 		settings.setRemoveTrack(true);
 		RenameFiles film = new RenameFiles(new File(fileDropped), settings);
 		assertEquals(fileCleaned, film.getCleanName());
+	}
+	
+	// TEST REGEX. TO BE IMPROVED
+	@Test
+	@Ignore
+	public void regexExample1() {
+		String movieDropped = "Orphan.Black.102.HD.mkv";
+		String movieCleaned = "Orphan_Black_S01E02";
+		Settings settings = new Settings();
+		settings.setMovieName(6);
+		settings.setSepaMovieSeasonEp(5);
+		settings.setRemoveTrack(true);
+		settings.setSeasonEpisode(10);
+		RenameFiles film = new RenameFiles(new File(movieDropped), settings);
+		assertEquals(movieCleaned, film.getCleanName());
+	}
+	
+	// TEST REGEX2
+	@Test
+	public void regexExample2() {
+		String movieDropped = "TwoDDL_westworld s01e03.mkv";
+		String movieCleaned = "Westworld_S01E03";
+		Settings settings = new Settings();
+		settings.setMovieName(6);
+		settings.setSepaMovieSeasonEp(5);
+		settings.setRemoveTrack(true);
+		settings.setSeasonEpisode(10);
+		RenameFiles film = new RenameFiles(new File(movieDropped), settings);
+		assertEquals(movieCleaned, film.getCleanName());
+	}
+	
+	// TEST REGEX2
+	@Test
+	public void regexExample3() {
+		String movieDropped = "The Blacklist - 02x01 - Lord Baltimore.LOL.French.C.updated.Addic7ed.com";
+		String movieCleaned = "The_Blacklist_S02E01";
+		Settings settings = new Settings();
+		settings.setMovieName(6);
+		settings.setSepaMovieSeasonEp(5);
+		settings.setRemoveTrack(true);
+		settings.setSeasonEpisode(10);
+		RenameFiles film = new RenameFiles(new File(movieDropped), settings);
+		assertEquals(movieCleaned, film.getCleanName());
 	}
 }

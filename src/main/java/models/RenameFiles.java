@@ -18,7 +18,7 @@ public class RenameFiles {
 	private final String REG_GET_EXTENSION = ".*(\\..*)$";
 	private final String REG_GET_EXTENSION_WITHOUT_NAME = "(.*)(\\..*)$";
 	private final String REG_FORMAT_SERIAL_S00E00 = ".*((s|S)([0-9]{1,2}).{0,1}(e|E)([0-9]{1,2})).*";
-	private final String REG_FORMAT_SERIAL_00x00 = ".*(([0-9]{1,2})(x|X)([0-9]{1,2})).*";
+	private final String REG_FORMAT_SERIAL_00x00 = ".*(([0-9]{2})(x|X)([0-9]{2})).*";
 	private final String REG_FORMAT_MUSIC = "([0-9]{2,3})(.*)";
 	private final String REG_CLEANING_NUMBER = "(.*)(\\(.*\\))(.*)";
 	private final String REG_CLEANING_BRACKET = "(.*)(\\[.*\\])(.*)";
@@ -26,6 +26,7 @@ public class RenameFiles {
 	private final String REG_CLEANING_DATE = "(.*)([0-9]{4})(.*)";
 	private final String REG_CLEANING_ACCENT = 	"[^\\p{ASCII}]";
 	private final String REG_1_CLEANING_ZONE_TELECHARGEMENT = "(.*)(www.*zone.*telechargement.*com)(.*)";
+	private final String REG_1_CLEANING_TWO_DDL = "(.*)(twoddl)(.*)";
 
 	public RenameFiles (File pFileFilm, Settings pSettings)
 	{
@@ -256,10 +257,10 @@ public class RenameFiles {
 			nameTemp = (m.group(1)+m.group(3));
 			// {}
 			p = Pattern .compile(REG_CLEANING_ACCOLADE);
-			
 			m = p.matcher(nameTemp);
 			if (m.find())
 			nameTemp = (m.group(1)+m.group(3));
+			
 			// cleaning date if position is more than 8 characters
 			p = Pattern .compile(REG_CLEANING_DATE);
 			
@@ -269,10 +270,11 @@ public class RenameFiles {
 				if (m.start(2)>=8)
 				nameTemp = (m.group(1));
 			}
+			
 			// cleaning accents
 			nameTemp = Normalizer.normalize(nameTemp, Normalizer.Form.NFD).replaceAll(REG_CLEANING_ACCENT, "");
 			
-			// cleaning "www_zone_telechargement_com"
+			// cleaning "ZONETELECHARGEMENT REGEX"
 			p = Pattern .compile(REG_1_CLEANING_ZONE_TELECHARGEMENT);
 			
 			m = p.matcher(nameTemp);
@@ -281,9 +283,20 @@ public class RenameFiles {
 				if (m.start(2)>=8)
 				nameTemp = (m.group(1) + " " + m.group(3));
 			}
+			
+			// cleaning "TWODDL REGEX"
+			p = Pattern .compile(REG_1_CLEANING_TWO_DDL);
+			m = p.matcher(nameTemp);
+			
+			if (m.find())
+			{
+				nameTemp = (m.group(1) + " " + m.group(3));
+			}
+			
 			// cleaning of the spaces
 			nameTemp = replaceWeirdChar(nameTemp, " ");
-			nameTemp = nameTemp.trim();
+			nameTemp = cleanCharacterInMore(nameTemp);
+			
 			// SETTINGS
 			// if it's a serial --> erase all after SxEx
 			if (isSerial())
@@ -299,16 +312,16 @@ public class RenameFiles {
 			if (this.settings.areAllFirstLetterCapital()){
 				nameTemp = allFirstLetterInCapital(nameTemp);
 			}
-			
+
 			// first letter in capital
 			else if (this.settings.isFirstLetterCapital()){
 				nameTemp = firstLetterInCapital(nameTemp);
 			}
 			
 			// remove all weird character and trim to remove spaces
-			replaceWeirdChar(nameTemp, " ");
+			nameTemp = replaceWeirdChar(nameTemp, " ");
 			nameTemp = nameTemp.trim();
-			
+
 			// set separator and clean
 			setSpaceChar(settings.getSeparatorMovieName());
 			
@@ -321,7 +334,6 @@ public class RenameFiles {
 			{
 				//adding of the separator
 				nameTemp += settings.getSepaSymbolMovieSeasonEp();
-				
 				// adding of the season&episode number
 				nameTemp += settings.getSymbolSeasonEpisode(this.getNumSeasonString(0), this.getNumEpisodeString(0));
 			}
@@ -355,30 +367,48 @@ public class RenameFiles {
 		return false;
 	}
 	
-//	private String cleanDoubleSpace (String pString)
-//	{
-//		int strLenOld = pString.length(), strLenNew = -1;
-//		
-//		// double "__"
-//		while (strLenOld!=strLenNew)
-//		{
-//			strLenOld = pString.length();
-//			pString = pString.replaceAll("__", "_");
-//			strLenNew = pString.length();
-//		}
-//		
-//		// double "  "
-//		strLenOld = pString.length();
-//		strLenNew = -1;
-//		
-//		while (strLenOld!=strLenNew)
-//		{
-//			strLenOld = pString.length();
-//			pString = pString.replaceAll("  ", " ");
-//			strLenNew = pString.length();
-//		}
-//		return pString;
-//	}
+	private String cleanCharacterInMore (String pString)
+	{
+		int strLenOld = pString.length(), strLenNew = -1;
+		
+		// "__"
+		while (strLenOld!=strLenNew)
+		{
+			strLenOld = pString.length();
+			pString = pString.replaceAll("__", "_");
+			pString = pString.replaceAll("___", "_");
+			pString = pString.replaceAll("____", "_");
+			strLenNew = pString.length();
+		}
+		
+		// "  "
+		strLenOld = pString.length();
+		strLenNew = -1;
+		
+		while (strLenOld!=strLenNew)
+		{
+			strLenOld = pString.length();
+			pString = pString.replaceAll("  ", " ");
+			pString = pString.replaceAll("   ", " ");
+			pString = pString.replaceAll("    ", " ");
+			strLenNew = pString.length();
+		}
+		
+		// "--"
+		strLenOld = pString.length();
+		strLenNew = -1;
+		
+		while (strLenOld!=strLenNew)
+		{
+			strLenOld = pString.length();
+			pString = pString.replaceAll("--", " ");
+			pString = pString.replaceAll("---", " ");
+			pString = pString.replaceAll("----", " ");
+			strLenNew = pString.length();
+		}
+		
+		return pString;
+	}
 	
 	private String firstLetterInCapital (String pString)
 	{
