@@ -2,7 +2,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>maxiFilmApp</groupId>
+	<parent>
+		<groupId>maxiFilmApp</groupId>
+		<artifactId>maxiFilmApp</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	
 	<artifactId>commons</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
@@ -31,7 +36,7 @@
 				<version>2.6</version>
 				<executions>
 					<execution>
-						<id>MaxiFilmCommons</id>
+						<id>commons</id>
 						<configuration>
 							<appendAssemblyId>false</appendAssemblyId>
 							<outputDirectory>build</outputDirectory>

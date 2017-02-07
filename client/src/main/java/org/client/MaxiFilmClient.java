@@ -1,21 +1,14 @@
 package org.client;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.commons.RenameFiles;
 import org.commons.Settings;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 /**
  * Hello world!
@@ -37,6 +30,9 @@ public class MaxiFilmClient {
 	private static Settings settings = new Settings();
 	private static RenameFiles film;
 	private static String answerLoopRename = "";
+	private static boolean notManage = false;
+
+	private static String JUMP = "\n\n";
 
 	@SuppressWarnings("resource")
 	public static void main(String[] args) {
@@ -45,6 +41,10 @@ public class MaxiFilmClient {
 		for (String path : args) {
 			if (!path.equalsIgnoreCase("-f") && !path.equalsIgnoreCase("-force")) {
 				File[] filesT = new File(path).listFiles();
+				if (filesT == null) {
+					System.out.println(ANSI_RED + "PATH INCORRECT. NO FILE TO RENAME" + ANSI_RED);
+					System.exit(1);
+				}
 				files.addAll(Arrays.asList(filesT));
 			} else {
 				answerLoopRename = "ya";
@@ -70,32 +70,44 @@ public class MaxiFilmClient {
 				film = new RenameFiles(files.get(i), settings);
 				Scanner scanner = new Scanner(System.in);
 
-				// Avoid a big space on the first loop
-				if (i != 0) {
-					System.out.println("\n\n\n\n");
+				System.out.println(JUMP);
+
+				if (!film.getNameWithoutExt().equals("")) {
+
+					// Ask the answer of the rename file
+					System.out.println(ANSI_BLUE + "------------------------------------" + ANSI_BLUE);
+					System.out.println(ANSI_BLUE + "------ File To Rename (" + ANSI_WHITE + indice + " / "
+							+ files.size() + ANSI_BLUE + ") ------" + ANSI_BLUE);
+					System.out.println(ANSI_BLUE + "------------------------------------" + ANSI_BLUE);
+					System.out.println(ANSI_RED + "\nFile Before: " + film.getNameWithoutExt() + ANSI_RED);
+					System.out.println(ANSI_GREEN + "File After: " + film.getCleanName() + ANSI_GREEN);
+					System.out.println(ANSI_RESET + "\nDo you want to rename the file ?" + ANSI_RESET);
+					System.out.println(ANSI_CYAN + "y / yes: ONLY rename this file" + ANSI_CYAN);
+					System.out.println(ANSI_CYAN + "n / no: ONLY refuse to rename this file" + ANSI_CYAN);
+					System.out.println(ANSI_CYAN + "na / no all: Refuse for all files" + ANSI_CYAN);
+					System.out.println(ANSI_CYAN + "ya / yes all: Accept to rename all files ?" + ANSI_CYAN);
+					answerLoopRename = scanner.next();
+
+					// If we accept to rename one or all files
+					if (answerLoopRename.equalsIgnoreCase("y") || answerLoopRename.equalsIgnoreCase("yes")
+							|| answerLoopRename.equalsIgnoreCase("ya")
+							|| answerLoopRename.equalsIgnoreCase("yes all")) {
+						film = new RenameFiles(files.get(i), settings);
+						film.applyRename(film.getCleanName());
+					}
+				} else {
+					notManage = true;
+					System.out.println(ANSI_RED + "------ File can't be renamed (" + ANSI_WHITE + indice + " / "
+							+ files.size() + ANSI_RED + ") ------" + ANSI_RED);
 				}
 
-				// Ask the answer of the rename file
-				System.out.println(ANSI_BLUE + "\n------------------------------------" + ANSI_BLUE);
-				System.out.println(ANSI_BLUE + "------ File To Rename (" + ANSI_WHITE + indice + " / " + files.size()
-						+ ANSI_BLUE + ") ------" + ANSI_BLUE);
-				System.out.println(ANSI_BLUE + "------------------------------------" + ANSI_BLUE);
-				System.out.println(ANSI_RED + "\nFile Before: " + film.getNameWithoutExt() + ANSI_RED);
-				System.out.println(ANSI_GREEN + "File After: " + film.getCleanName() + ANSI_GREEN);
-				System.out.println(ANSI_RESET + "\nDo you want to rename the file ?" + ANSI_RESET);
-				System.out.println(ANSI_CYAN + "y / yes: ONLY rename this file" + ANSI_CYAN);
-				System.out.println(ANSI_CYAN + "n / no: ONLY refuse to rename this file" + ANSI_CYAN);
-				System.out.println(ANSI_CYAN + "na / no all: Refuse for all files" + ANSI_CYAN);
-				System.out.println(ANSI_CYAN + "ya / yes all: Accept to rename all files ?" + ANSI_CYAN);
-				answerLoopRename = scanner.next();
-
-				// If we accept to rename one or all files
-				if (answerLoopRename.equalsIgnoreCase("y") || answerLoopRename.equalsIgnoreCase("yes")
-						|| answerLoopRename.equalsIgnoreCase("ya") || answerLoopRename.equalsIgnoreCase("yes all")) {
-					film = new RenameFiles(files.get(i), settings);
-					film.applyRename(film.getCleanName());
-				}
+			}
+			if (files.size() == indice) {
+				System.out.println(ANSI_GREEN + JUMP + "|--------------| " + ANSI_GREEN);
+				System.out.println(ANSI_GREEN + "|  Finished !  | " + ANSI_GREEN);
+				System.out.println(ANSI_GREEN + "|--------------| " + ANSI_GREEN);
 			}
 		}
+		System.exit(0);
 	}
 }
