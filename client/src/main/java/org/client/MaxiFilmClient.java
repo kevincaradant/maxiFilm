@@ -1,7 +1,10 @@
 package org.client;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -10,10 +13,6 @@ import java.util.Scanner;
 import org.commons.RenameFiles;
 import org.commons.Settings;
 
-/**
- * Hello world!
- *
- */
 public class MaxiFilmClient {
 
 	public static final String ANSI_RESET = "\u001B[0m";
@@ -30,17 +29,27 @@ public class MaxiFilmClient {
 	private static Settings settings = new Settings();
 	private static RenameFiles film;
 	private static String answerLoopRename = "";
-	private static boolean notManage = false;
 
 	private static String JUMP = "\n\n";
 
+	private static File[] listRecursiveFiles(Path path) {
+		File[] arrayFiles = new File[]{};
+		try {
+			arrayFiles = Files.walk(Paths.get(path.toUri())).parallel().map(file -> file.toFile())
+					.toArray(File[]::new);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return arrayFiles;
+	}
+
 	@SuppressWarnings("resource")
 	public static void main(String[] args) {
-
 		// Read all folders to get files
 		for (String path : args) {
 			if (!path.equalsIgnoreCase("-f") && !path.equalsIgnoreCase("-force")) {
-				File[] filesT = new File(path).listFiles();
+				File[] filesT = listRecursiveFiles(Paths.get(path));
 				if (filesT == null) {
 					System.out.println(ANSI_RED + "PATH INCORRECT. NO FILE TO RENAME" + ANSI_RED);
 					System.exit(1);
@@ -68,6 +77,7 @@ public class MaxiFilmClient {
 
 				// You ask for the first item
 				film = new RenameFiles(files.get(i), settings);
+				
 				Scanner scanner = new Scanner(System.in);
 
 				System.out.println(JUMP);
@@ -96,7 +106,6 @@ public class MaxiFilmClient {
 						film.applyRename(film.getCleanName());
 					}
 				} else {
-					notManage = true;
 					System.out.println(ANSI_RED + "------ File can't be renamed (" + ANSI_WHITE + indice + " / "
 							+ files.size() + ANSI_RED + ") ------" + ANSI_RED);
 				}
