@@ -19,7 +19,6 @@ public class MaxiFilmFront extends Application {
 	@FXMLViewFlowContext private ViewFlowContext flowContext;
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 
 		Settings settings;
 
