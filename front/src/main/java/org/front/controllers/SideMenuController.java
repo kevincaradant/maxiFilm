@@ -63,15 +63,13 @@ public class SideMenuController {
   @FXMLViewFlowContext
   private ViewFlowContext context;
   
-  private Stage stage;
-  
   @PostConstruct
   public void init() throws FlowException, VetoException {
 	  
     sideList.propagateMouseEventsToParent();
     FlowHandler contentFlowHandler = (FlowHandler) context.getRegisteredObject("ContentFlowHandler");
     Flow contentFlow = (Flow) context.getRegisteredObject("ContentFlow");
-    
+    Stage stage = (Stage) context.getRegisteredObject("Stage");
     
     bindNodeToController(home, HomeController.class, contentFlow, contentFlowHandler);
     bindNodeToController(musics, MusicsSettingsController.class, contentFlow, contentFlowHandler);
