@@ -1,6 +1,7 @@
 package org.front.controllers;
 
 import java.io.File;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -44,6 +45,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+@SuppressWarnings("restriction")
 @FXMLController(value = "/resources/fxml/Home.fxml" , title = "Material Design Example")
 public class HomeController {
   

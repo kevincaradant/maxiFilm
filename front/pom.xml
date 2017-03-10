@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>maxiFilmApp</groupId>
 		<artifactId>maxiFilmApp</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.0.2-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>front</artifactId>
@@ -15,9 +15,8 @@
 	<url>http://maven.apache.org</url>
 
 	<properties>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<!-- Define the version under a variable -->
+		<io.datafx.version>8.0</io.datafx.version>
 	</properties>
 
 	<dependencies>
@@ -29,12 +28,12 @@
 		<dependency>
 			<groupId>io.datafx</groupId>
 			<artifactId>core</artifactId>
-			<version>8.0.7</version>
+			<version>${io.datafx.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>io.datafx</groupId>
 			<artifactId>flow</artifactId>
-			<version>8.0</version>
+			<version>${io.datafx.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.jfoenix</groupId>
@@ -44,12 +43,10 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.12</version>
 		</dependency>
 		<dependency>
 			<groupId>maxiFilmApp</groupId>
 			<artifactId>commons</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 

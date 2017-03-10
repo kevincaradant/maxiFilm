@@ -16,6 +16,7 @@ import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
 
+@SuppressWarnings("restriction")
 @FXMLController(value = "/resources/fxml/SeriesSettings.fxml" , title = "Material Design Example")
 public class SeriesSettingsController{
   

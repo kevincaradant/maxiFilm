@@ -37,6 +37,7 @@ import java.util.function.Function;
 /**
  * A {@link FlowContainer} that supports animation for the view change.
  */
+@SuppressWarnings("restriction")
 public class AnimatedFlowContainer extends io.datafx.controller.flow.container.AnimatedFlowContainer implements FlowContainer<StackPane> {
 
     private StackPane root;

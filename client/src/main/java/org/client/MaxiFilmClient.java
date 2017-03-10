@@ -39,12 +39,11 @@ public class MaxiFilmClient {
 					.toArray(File[]::new);
 
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println(ANSI_RED + "PATH INCORRECT. NO FILE TO RENAME" + ANSI_RED);
 		}
 		return arrayFiles;
 	}
 
-	@SuppressWarnings("resource")
 	public static void main(String[] args) {
 		// Read all folders to get files
 		for (String path : args) {
@@ -77,7 +76,6 @@ public class MaxiFilmClient {
 
 				// You ask for the first item
 				film = new RenameFiles(files.get(i), settings);
-				
 				Scanner scanner = new Scanner(System.in);
 
 				System.out.println(JUMP);
@@ -109,7 +107,6 @@ public class MaxiFilmClient {
 					System.out.println(ANSI_RED + "------ File can't be renamed (" + ANSI_WHITE + indice + " / "
 							+ files.size() + ANSI_RED + ") ------" + ANSI_RED);
 				}
-
 			}
 			if (files.size() == indice) {
 				System.out.println(ANSI_GREEN + JUMP + "|--------------| " + ANSI_GREEN);
@@ -117,6 +114,7 @@ public class MaxiFilmClient {
 				System.out.println(ANSI_GREEN + "|--------------| " + ANSI_GREEN);
 			}
 		}
+		
 		System.exit(0);
 	}
 }

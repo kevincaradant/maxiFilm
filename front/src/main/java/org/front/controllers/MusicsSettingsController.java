@@ -1,6 +1,5 @@
 package org.front.controllers;
 import javax.annotation.PostConstruct;
-
 import org.commons.Settings;
 
 import com.jfoenix.controls.JFXButton;
@@ -9,11 +8,13 @@ import com.jfoenix.controls.JFXToggleButton;
 import io.datafx.controller.FXMLController;
 import io.datafx.controller.flow.context.FXMLViewFlowContext;
 import io.datafx.controller.flow.context.ViewFlowContext;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
+@SuppressWarnings("restriction")
 @FXMLController(value = "/resources/fxml/MusicsSettings.fxml" , title = "Material Design Example")
 public class MusicsSettingsController{
 

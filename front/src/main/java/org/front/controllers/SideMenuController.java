@@ -19,6 +19,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+@SuppressWarnings("restriction")
 @FXMLController(value = "/resources/fxml/SideMenu.fxml", title = "Material Design Example")
 public class SideMenuController {
 

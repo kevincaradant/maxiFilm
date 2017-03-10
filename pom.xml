@@ -4,13 +4,19 @@
 
 	<groupId>maxiFilmApp</groupId>
 	<artifactId>maxiFilmApp</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>maxiFilmApp</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
+		<!-- Force the JDK compiler version -->
+		<jdk.version>1.8</jdk.version>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		
+		<!-- Force the encoding type -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -19,4 +25,21 @@
 		<module>client</module>
 		<module>front</module>
 	</modules>
+	
+	<!-- Lock the version used by the modules -->
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<scope>test</scope>
+				<version>4.12</version>
+			</dependency>
+			<dependency>
+				<groupId>maxiFilmApp</groupId>
+				<artifactId>commons</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 </project>

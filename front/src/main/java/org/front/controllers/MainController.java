@@ -1,5 +1,4 @@
 package org.front.controllers;
-
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -32,6 +31,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+@SuppressWarnings("restriction")
 @FXMLController(value = "/resources/fxml/Main.fxml", title = "Material Design Example")
 public class MainController{
 

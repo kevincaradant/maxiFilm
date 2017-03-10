@@ -14,10 +14,12 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+@SuppressWarnings("restriction")
 public class MaxiFilmFront extends Application {
 
 	@FXMLViewFlowContext private ViewFlowContext flowContext;
 
+	
 	public static void main(String[] args) {
 
 		Settings settings;

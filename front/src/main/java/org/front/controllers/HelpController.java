@@ -11,6 +11,7 @@ import com.jfoenix.controls.JFXButton;
 import io.datafx.controller.FXMLController;
 import javafx.fxml.FXML;
 
+@SuppressWarnings("restriction")
 @FXMLController(value = "/resources/fxml/Help.fxml" , title = "Material Design Example")
 public class HelpController{
 
