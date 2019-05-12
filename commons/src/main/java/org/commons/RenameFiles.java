@@ -23,10 +23,10 @@ public class RenameFiles {
 	private final String REG_CLEANING_NUMBER = "(.*)(\\(.*\\))(.*)";
 	private final String REG_CLEANING_BRACKET = "(.*)(\\[.*\\])(.*)";
 	private final String REG_CLEANING_ACCOLADE = "(.*)(\\{.*\\})(.*)";
-	private final String REG_CLEANING_DATE = "(.*)([0-9]{4})(.*)";
 	private final String REG_CLEANING_ACCENT = 	"[^\\p{ASCII}]";
 	private final String REG_1_CLEANING_ZONE_TELECHARGEMENT = "(.*)(www.*zone.*telechargement.*com)(.*)";
 	private final String REG_1_CLEANING_TWO_DDL = "(.*)(twoddl)(.*)";
+	private final String REG_1_CLEANING_MAIN_PATTERN = "([a-zA-Z.]*[0-9]{4})(.*)";
 
 	public RenameFiles (File pFileFilm, Settings pSettings)
 	{
@@ -261,13 +261,12 @@ public class RenameFiles {
 			if (m.find())
 			nameTemp = (m.group(1)+m.group(3));
 			
-			// cleaning date if position is more than 8 characters
-			p = Pattern .compile(REG_CLEANING_DATE);
+			// cleaning movies pattern
+			p = Pattern .compile(REG_1_CLEANING_MAIN_PATTERN);
 			
 			m = p.matcher(nameTemp);
 			if (m.find())
 			{
-				if (m.start(2)>=8)
 				nameTemp = (m.group(1));
 			}
 			

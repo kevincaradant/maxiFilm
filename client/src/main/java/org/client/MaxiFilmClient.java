@@ -107,6 +107,8 @@ public class MaxiFilmClient {
 					System.out.println(ANSI_RED + "------ File can't be renamed (" + ANSI_WHITE + indice + " / "
 							+ files.size() + ANSI_RED + ") ------" + ANSI_RED);
 				}
+
+				// scanner.close();
 			}
 			if (files.size() == indice) {
 				System.out.println(ANSI_GREEN + JUMP + "|--------------| " + ANSI_GREEN);
@@ -114,7 +116,6 @@ public class MaxiFilmClient {
 				System.out.println(ANSI_GREEN + "|--------------| " + ANSI_GREEN);
 			}
 		}
-		
 		System.exit(0);
 	}
 }
