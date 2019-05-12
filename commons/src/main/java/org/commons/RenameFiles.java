@@ -26,7 +26,7 @@ public class RenameFiles {
 	private final String REG_CLEANING_ACCENT = 	"[^\\p{ASCII}]";
 	private final String REG_1_CLEANING_ZONE_TELECHARGEMENT = "(.*)(www.*zone.*telechargement.*com)(.*)";
 	private final String REG_1_CLEANING_TWO_DDL = "(.*)(twoddl)(.*)";
-	private final String REG_1_CLEANING_MAIN_PATTERN = "([a-zA-Z.]*[0-9]{4})(.*)";
+	private final String REG_1_CLEANING_MAIN_PATTERN = "([a-zA-Z._]*[0-9]{4})(.*)";
 
 	public RenameFiles (File pFileFilm, Settings pSettings)
 	{
