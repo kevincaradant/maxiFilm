@@ -54,6 +54,16 @@ import com.google.gson.GsonBuilder;
 @SuppressWarnings("serial")
 public class Settings implements Serializable {
 
+	public static final String ANSI_RESET = "\u001B[0m";
+	public static final String ANSI_BLACK = "\u001B[30m";
+	public static final String ANSI_RED = "\u001B[1;31m";
+	public static final String ANSI_GREEN = "\u001B[1;32m";
+	public static final String ANSI_YELLOW = "\u001B[1;33m";
+	public static final String ANSI_BLUE = "\u001B[1;34m";
+	public static final String ANSI_PURPLE = "\u001B[1;35m";
+	public static final String ANSI_CYAN = "\u001B[1;36m";
+	public static final String ANSI_WHITE = "\u001B[37m";
+	
 	private int movieName;			 // Typical name for a movie or a serial
 	private int maxMovieName;			 // Typical name for a movie or a serial
 	private int maxSeasonEpisode;			 // Typical name for a movie or a serial
@@ -232,7 +242,28 @@ public class Settings implements Serializable {
 				this.setSepaMovieSeasonEp(settingsObj.sepaMovieSeasonEp);
 			}
 		} catch (FileNotFoundException e) {
+			System.out.println(ANSI_RED + "FILE SETTINGS NOT FOUND. NEW ONE WILL BE CREATED" + e + ANSI_RED);
 			saveSettings(new Settings());
+		}
+	}
+	
+	public void restoreSettings (String path){
+		Gson gsonDeserialize = new GsonBuilder().create();
+
+		BufferedReader br;
+		try {
+			br = new BufferedReader(new FileReader(path));
+			System.out.println(ANSI_WHITE + "FILE SETTINGS FOUND: " + path + ANSI_WHITE);
+			Settings settingsObj = gsonDeserialize.fromJson(br, Settings.class);
+			//check if the parameters are correct
+			if( validatorMovieName(settingsObj) &&  validatorSeasonEpisode(settingsObj) && validatorSeapaMovieSeasonEp(settingsObj) && validatorRemoveTrack(settingsObj)){
+				this.setRemoveTrack(settingsObj.removeTrack);
+				this.setMovieName(settingsObj.movieName);
+				this.setSeasonEpisode(settingsObj.seasonEpisode);
+				this.setSepaMovieSeasonEp(settingsObj.sepaMovieSeasonEp);
+			}
+		} catch (FileNotFoundException e) {
+			System.out.println(ANSI_RED + e + ANSI_RED);
 		}
 	}
 

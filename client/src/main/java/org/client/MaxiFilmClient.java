@@ -31,12 +31,13 @@ public class MaxiFilmClient {
 	private static String answerLoopRename = "";
 
 	private static String JUMP = "\n\n";
+	private static String settingsPath = "";
+	private static Boolean isASettingsFile = false;
 
 	private static File[] listRecursiveFiles(Path path) {
-		File[] arrayFiles = new File[]{};
+		File[] arrayFiles = new File[] {};
 		try {
-			arrayFiles = Files.walk(Paths.get(path.toUri())).parallel().map(file -> file.toFile())
-					.toArray(File[]::new);
+			arrayFiles = Files.walk(Paths.get(path.toUri())).parallel().map(file -> file.toFile()).toArray(File[]::new);
 
 		} catch (IOException e) {
 			System.out.println(ANSI_RED + "PATH INCORRECT. NO FILE TO RENAME" + ANSI_RED);
@@ -48,19 +49,33 @@ public class MaxiFilmClient {
 		// Read all folders to get files
 		for (String path : args) {
 			if (!path.equalsIgnoreCase("-f") && !path.equalsIgnoreCase("-force")) {
-				File[] filesT = listRecursiveFiles(Paths.get(path));
-				if (filesT == null) {
-					System.out.println(ANSI_RED + "PATH INCORRECT. NO FILE TO RENAME" + ANSI_RED);
-					System.exit(1);
+				if(!isASettingsFile) {
+					File[] filesT = listRecursiveFiles(Paths.get(path));
+					if (filesT == null) {
+						System.out.println(ANSI_RED + "PATH INCORRECT. NO FILE TO RENAME" + ANSI_RED);
+						System.exit(1);
+					}
+					files.addAll(Arrays.asList(filesT));
 				}
-				files.addAll(Arrays.asList(filesT));
+				
+				if (isASettingsFile) {
+					settingsPath = path;
+					isASettingsFile = false;
+				}
+				
+				if (path.equalsIgnoreCase("-s")) {
+					isASettingsFile = true;
+				} 	
 			} else {
 				answerLoopRename = "ya";
 			}
 		}
-
 		// Restore the settings if available
-		settings.restoreSettings();
+		if(settingsPath != "" && settingsPath != null) {
+			settings.restoreSettings(settingsPath);
+		} else {
+			settings.restoreSettings();
+		}
 
 		// Loop on all files
 		System.out.println("\n" + ANSI_PURPLE + files.size() + " files detected" + ANSI_PURPLE);

@@ -13,6 +13,11 @@ You can use it directly with the GUI available in the following folder: /front/b
 ## CLIENT
 
 You can use the MAxiFilm in command line available in the following folder: /client/build/client-X.X.X-SNAPCHOT.jar
+Example: "java -jar /path/client.jar /path/folder/to/analyze -s /path/settings/file -f"
+-s => Path of the settings.json file
+-f => Force (YES) to rename files auto, without interactive mode with prompt to ask NO or YES
+
+Example 2: "java -jar /path/client.jar /path/folder/to/analyze"
 
 ## HELP
 
